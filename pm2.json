@@ -1,0 +1,9 @@
+{
+  "name" : "sapu-weixin-bot",
+  "script" : "bin/www",
+  "env_production" : {
+    "NODE_ENV": "production",
+    "PORT": "13000"
+  }
+}
+
