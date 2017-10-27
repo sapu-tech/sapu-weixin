@@ -98,6 +98,24 @@ describe('Upload and check reservation', function() {
     body.reservations.should.have.size(2)
   })
 
+  it('should be able to upload another reservation of a different place', async function() {
+    let newData = Object.assign({}, data, {
+      startTime: (new Date).addHours(1),
+      endTime: (new Date).addHours(5),
+      place: 1
+    })
+    let {body} = await request(app)
+      .post('/reservation/')
+      .send(newData)
+      .expect(200)
+    body.should.have.property('success')
+    body.success.should.be.equal(true)
+    let {reservation} = body
+    reservation.should.have.property('reservationId')
+    newreservationId = reservation.reservationId
+    newreservationId.should.not.be.equal(reservationId)
+  })
+
   it('should be able to delete the first reservation', async function() {
     let {body} = await request(app)
       .delete(`/reservation/${user.userId}/${reservationId}`)
@@ -107,7 +125,7 @@ describe('Upload and check reservation', function() {
     body.should.have.property('reservation')
   })
 
-  it('should get only one reservation at this time', async function() {
+  it('should get two reservations at this time', async function() {
     let {body} = await request(app)
       .get('/reservation/')
       .expect(200)
@@ -115,7 +133,7 @@ describe('Upload and check reservation', function() {
     body.success.should.be.equal(true)
     body.should.have.property('reservations')
     body.reservations.should.be.Array()
-    body.reservations.should.have.size(1)
+    body.reservations.should.have.size(2)
   })
 })
 

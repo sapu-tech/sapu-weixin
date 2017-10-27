@@ -80,7 +80,7 @@ router.get('/:month/:date/:inDayId', (req, res, next) => {
 router.post('/', (req, res, next) => {
   let {userId, userName, startTime, endTime, place} = req.body
 
-  Reservation.find({startTime: {$lt: endTime}, endTime: {$gt: startTime}})
+  Reservation.find({startTime: {$lt: endTime}, endTime: {$gt: startTime}, place})
   .then(reservations => {
     if (reservations && reservations.length > 0) {
       return errorPromiseWithContent(1,
