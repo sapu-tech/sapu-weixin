@@ -2,9 +2,22 @@ var express = require('express');
 var router = express.Router();
 var weixin = require('weixin-api');
 const interpretor = require('../lib/interpretor')
+const {production} = require('../config')
 
-const send = msg => {
-  weixin.sendMsg(msg)
+const send = (old, n) => {
+  n.fromUserName = old.toUserName,
+  n.toUserName = old.fromUserName,
+  weixin.sendMsg(n)
+}
+
+const sendWrapper = (msg, reply) => {
+  let resMsg = {
+    msgType : "text",
+    content : reply,
+    funcFlag : 0
+  }
+
+  send(msg, resMsg)
 }
 
 // 接入验证
@@ -18,34 +31,30 @@ router.get('/', function(req, res) {
 
 // 监听文本消息
 weixin.textMsg(function(msg) {
-  console.log("textMsg received")
-  console.log(JSON.stringify(msg))
+  if (!production) {
+    console.log("textMsg received")
+    console.log(JSON.stringify(msg))
+  }
 
   interpretor(msg.content, msg.fromUserName)
     .then(reply => {
-      console.log('\nReplies : \n' + reply + '\n')
-
-      let resMsg = {
-        fromUserName : msg.toUserName,
-        toUserName : msg.fromUserName,
-        msgType : "text",
-        content : reply,
-        funcFlag : 0
+      if (!production) {
+        console.log('\nReplies : \n' + reply + '\n')
       }
 
-      send(resMsg)
+      if (Array.isArray(reply)) {
+        for (let r of reply) {
+          send(msg, r)
+        }
+      } else {
+        sendWrapper(msg, reply)
+      }
     })
     .catch(err => {
-      console.error(err)
-      let resMsg = {
-        fromUserName : msg.toUserName,
-        toUserName : msg.fromUserName,
-        msgType : "text",
-        content : "Error......",
-        funcFlag : 0
+      if (!production) {
+        console.error(err)
       }
-
-      send(resMsg)
+      sendWrapper(msg, "Error...")
     })
 })
 

@@ -8,6 +8,7 @@ module.exports = {
     'flirt': 'flirt',
     'all': 'all',
     'info': 'info',
+    'recommend': 'recommend',
   },
 
   'arguments_error': 'Arguments error!',
@@ -40,6 +41,7 @@ module.exports = {
     + '  reserve delete [month] [date] [id]\n'
     + '  setname [name]\n'
     + '  info [index]\n'
+    + '  recommend\n'
     + '  flirt\n\n'
     + 'examples:\n'
     + '  reserve new 9 6 18.5 20 0\n'
