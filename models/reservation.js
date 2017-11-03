@@ -1,10 +1,10 @@
-'use strict';
+'use strict'
 
-var mongoose = require('mongoose')
-var Schema = mongoose.Schema
-var {getNewReservationId} = require('../lib/incremental_id')
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
+const {getNewReservationId} = require('../lib/incremental_id')
 
-var ReservationSchema = new Schema({
+const ReservationSchema = new Schema({
     reservationId: {type: Number, min: 0, required: true},
     inDayId: {type: Number, min: 0, required: true},
     userId: {type: String, required: true},
@@ -14,19 +14,18 @@ var ReservationSchema = new Schema({
     place: {type: Number, min: 0, max: 1, required: true}
 })
 
-ReservationSchema.statics.make = function(doc) {
+ReservationSchema.statics.make = async function(doc) {
     let {userId, userName, startTime, endTime, place} = doc
 
-    return getNewReservationId(this, startTime).then(([reservationId, inDayId]) => {
-        return this.create({
-            reservationId,
-            inDayId,
-            userId,
-            userName,
-            startTime,
-            endTime,
-            place
-        })
+    let [reservationId, inDayId] = await getNewReservationId(this, startTime)
+    return this.create({
+        reservationId,
+        inDayId,
+        userId,
+        userName,
+        startTime,
+        endTime,
+        place
     })
 }
 

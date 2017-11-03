@@ -1,7 +1,7 @@
 'use strict'
 
 const should = require('should')
-const request = require('supertest-as-promised')(Promise)
+const request = require('supertest')
 // const app = require('../../app')
 const {baseURL, userId, msg, token, users} = require('../../config').test
 const {receive, send} = require('../testutil')

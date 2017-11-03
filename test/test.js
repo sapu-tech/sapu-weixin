@@ -9,6 +9,6 @@ before(async function() {
   //await User.create(user)
 })
 
-// require('./tests/user')
-// require('./tests/reservation')
-require('./tests/weixin')
+require('./tests/user')
+require('./tests/reservation')
+// require('./tests/weixin')

@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
-var mongoose = require('mongoose')
-var Schema = mongoose.Schema
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-var UserSchema = new Schema({
+const UserSchema = new Schema({
     userId: {type: String, required: true, index: {unique: true}},
     userName: {type: String, required: true}
 })
