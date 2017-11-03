@@ -1,7 +1,7 @@
 'use strict'
 
 const should = require('should')
-const request = require("supertest-as-promised")(Promise)
+const request = require("supertest")
 const testData = require('../../config').test
 const app = require('../../app')
 require('datejs')

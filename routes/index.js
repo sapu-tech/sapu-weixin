@@ -4,84 +4,60 @@ var weixin = require('weixin-api');
 const interpretor = require('../lib/interpretor')
 const {production} = require('../config')
 
-const send = (old, n) => {
-  n.fromUserName = old.toUserName,
-  n.toUserName = old.fromUserName,
-  weixin.sendMsg(n)
+const send = (reply, incoming) => {
+  reply.fromUserName = incoming.toUserName
+  reply.toUserName = incoming.fromUserName
+  weixin.sendMsg(reply)
 }
 
-const sendWrapper = (msg, reply) => {
+const sendWrapper = (reply, incoming) => {
   let resMsg = {
     msgType : "text",
     content : reply,
     funcFlag : 0
   }
 
-  send(msg, resMsg)
+  send(resMsg, incoming)
+}
+
+const sender = (replies, incoming) => {
+  if (Array.isArray(replies)) {
+    replies.map(reply => {
+      send(reply, incoming)
+    })
+  } else 
+    sendWrapper(replies, incoming)
 }
 
 // 接入验证
-router.get('/', function(req, res) {
+router.get('/', (req, res) => {
   if (weixin.checkSignature(req)) {
     res.status(200).send(req.query.echostr)
   } else {
     res.status(200).send('fail')
   }
-});
+})
 
-// 监听文本消息
 weixin.textMsg(function(msg) {
-  if (!production) {
-    console.log("textMsg received")
-    console.log(JSON.stringify(msg))
-  }
+  if (!production)
+    console.log(`Message : ${JSON.stringify(msg)}`)
 
   interpretor(msg.content, msg.fromUserName)
     .then(reply => {
-      if (!production) {
-        console.log('\nReplies : \n' + reply + '\n')
-      }
+      if (!production)
+        console.log(`Reply : ${JSON.stringify(reply)}`)
 
-      if (Array.isArray(reply)) {
-        for (let r of reply) {
-          send(msg, r)
-        }
-      } else {
-        sendWrapper(msg, reply)
-      }
+      sender(reply, msg)
     })
-    .catch(err => {
-      if (!production) {
-        console.error(err)
-      }
-      sendWrapper(msg, "Error...")
+    .catch(e => {
+      if (!production)
+        console.error(e)
+      
+      sender("Error...", msg)
     })
+    .catch(console.error)
 })
 
-// 监听文本消息
-weixin.eventMsg(function(msg) {
-  console.log("eventMsg received")
-  console.log(JSON.stringify(msg))
-
-  interpretor('help', msg.fromUserName)
-    .then(reply => {
-      console.log('\nReplies : \n' + reply + '\n')
-
-      let resMsg = {
-        fromUserName : msg.toUserName,
-        toUserName : msg.fromUserName,
-        msgType : "text",
-        content : reply,
-        funcFlag : 0
-      }
-
-      send(resMsg)
-    })
-    .catch(err => {console.log(err)})
-})
-
-router.post('/', function(req, res) {
-  weixin.loop(req, res)
-})
+router.post('/', weixin.loop.bind(weixin))
 
 module.exports = router

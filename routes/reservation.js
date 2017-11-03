@@ -6,31 +6,28 @@ const mongoose = require('mongoose')
 const moment = require('moment-timezone')
 const Reservation = mongoose.model('Reservation')
 const {production} = require('../config')
-const {errorPromise, errorPromiseWithContent, successHandler, errorHandler, dateQueryBuilder} = require('../lib/utils')
+const {successHandler, dateQueryBuilder, asyncMiddleware, ReservationError} = require('../lib/utils')
 
 // get all reservations
-router.get('/', (req, res, next) => {
-  Reservation.find()
-  .then(reservations => successHandler(res, {reservations}))
-  .catch(errorHandler(res))
-})
+router.get('/', asyncMiddleware(async (req, res, next) => {
+  let reservations = await Reservation.find()
+  successHandler(res, {reservations})
+}))
 
 // get a reservation
-router.get('/:reservationId', (req, res, next) => {
+router.get('/:reservationId', asyncMiddleware(async (req, res, next) => {
   let {reservationId} = req.params
-  Reservation.findOne({reservationId})
-  .then(reservation => {
-    if (reservation) {
-      successHandler(res, {reservation})
-    } else {
-      return errorPromise(2)
-    }
-  })
-  .catch(errorHandler(res))
-})
+  let reservation = await Reservation.findOne({reservationId})
+  
+  if (reservation) {
+    successHandler(res, {reservation})
+  } else {
+    throw new ReservationError(2)
+  }
+}))
 
 // get reservations by {month, date}
-router.get('/:month/:date', (req, res, next) => {
+router.get('/:month/:date', asyncMiddleware(async (req, res, next) => {
   let {month, date} = req.params
 
   let today = moment().startOf('day')
@@ -44,13 +41,12 @@ router.get('/:month/:date', (req, res, next) => {
   let nd = moment(d).add({days: 1})
   let p = {startTime: {$gte: d.toDate(), $lt: nd.toDate()}}
 
-  Reservation.find(p)
-  .then(reservations => {successHandler(res, {reservations})})
-  .catch(errorHandler(res))
-})
+  let reservations = await Reservation.find(p)
+  successHandler(res, {reservations})
+}))
 
 // get a reservation by {month, date, inDayId}
-router.get('/:month/:date/:inDayId', (req, res, next) => {
+router.get('/:month/:date/:inDayId', asyncMiddleware(async (req, res, next) => {
   let {month, date, inDayId} = req.params
 
   let today = moment().startOf('day')
@@ -64,56 +60,46 @@ router.get('/:month/:date/:inDayId', (req, res, next) => {
   let nd = moment(d).add({days: 1})
   let p = {startTime: {$gte: d.toDate(), $lt: nd.toDate()}, inDayId: inDayId}
 
-  Reservation.findOne(p)
-  .then(reservation => {
-    if (reservation) {
-      successHandler(res, {reservation})
-    } else {
-      return errorPromise(2)
-    }
-  })
-  .catch(errorHandler(res))
-})
+  let reservation = await Reservation.findOne(p)
+  
+  if (reservation) {
+    successHandler(res, {reservation})
+  } else {
+    throw new ReservationError(2)
+  }
+}))
 
 // add a reservation
 // return {reservation}
-router.post('/', (req, res, next) => {
+router.post('/', asyncMiddleware(async (req, res, next) => {
   let {userId, userName, startTime, endTime, place} = req.body
 
-  Reservation.find({startTime: {$lt: endTime}, endTime: {$gt: startTime}, place})
-  .then(reservations => {
-    if (reservations && reservations.length > 0) {
-      return errorPromiseWithContent(1,
-        reservations.map(reservation => {
-          return reservation.userId
-      }))
-    } else {
-      return Reservation.make({userId, userName, startTime, endTime, place})
-    }
-  })
-  .then(reservation => successHandler(res, {reservation}))
-  .catch(errorHandler(res))
-})
+  let reservations = await Reservation.find({startTime: {$lt: endTime}, endTime: {$gt: startTime}, place})
+
+  if (reservations && reservations.length > 0) {
+    throw new ReservationError(1, reservations.map(reservation => reservation.userId))
+  } else {
+    let reservation = await Reservation.make({userId, userName, startTime, endTime, place})
+    successHandler(res, {reservation})
+  }
+}))
 
 // delete an reservation
-router.delete('/:userId/:reservationId', (req, res, next) => {
+router.delete('/:userId/:reservationId', asyncMiddleware(async (req, res, next) => {
   let {userId, reservationId} = req.params
   reservationId = parseInt(reservationId)
 
-  Reservation.findOne({reservationId: reservationId})
-  .then(reservation => {
-    if (reservation) {
-      if (reservation.userId == userId)
-        reservation.remove()
-          .then(reservation => {successHandler(res, {reservation})})
-          .catch(errorHandler(res))
-      else
-        return errorPromise(5)
+  let reservation = await Reservation.findOne({reservationId})
+  if (reservation) {
+    if (reservation.userId == userId) {
+      reservation = reservation.remove()
+      successHandler(res, {reservation})
     }
     else
-      return errorPromise(2)
-  })
-  .catch(errorHandler(res))
-})
+      throw new ReservationError(5)
+  }
+  else
+    throw new ReservationError(2)
+}))
 
 module.exports = router
