@@ -17,7 +17,7 @@ const ReservationSchema = new Schema({
 ReservationSchema.statics.make = async function(doc) {
     let {userId, userName, startTime, endTime, place} = doc
 
-    let [reservationId, inDayId] = await getNewReservationId(this, startTime)
+    let [reservationId, inDayId] = await getNewReservationId(this, startTime, userId)
     return this.create({
         reservationId,
         inDayId,
