@@ -9,6 +9,8 @@ module.exports = {
     '全部': 'all',
     '信息': 'info',
     '推荐': 'recommend',
+    '语言': 'language',
+    '设置': 'set',
   },
   
   'arguments_error': '参数错误！请输入帮助查看命令列表。',
@@ -26,6 +28,7 @@ module.exports = {
   'reserve_new_id': '已预约! 编号是 %d 。',
   'reserve_new_failed': '由于时间冲突无法预约，请联系： %s。',
   'reserve_new_argument_error': '时间格式/顺序有误！',
+  'reserve_new_too_far_soon_error': '不能新增一个月以后的预约。',
   'reserve_delete_id': '已删除 %d月%d日 编号 %d 。',
   'reserve_delete_failed': '删除 %d月%d日 编号 %d 失败！%s',
   'reserve_delete_no_found': '未找到预约。',
@@ -105,6 +108,14 @@ module.exports = {
       + '\n'
       + '欢迎前来！\n',
   ],
+
+  'language_help': `语言选项：
+0 中文
+1 English
+2 56iL5bqP5ZGY5LiT55SoCg==
+用法： 语言 设置 [序号]`,
+  'language_set': `语言设置成功！`,
+  'language_set_failed': `语言设置失败！`,
 
   'flirt': ['哎呀，人家害羞啦⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄',
     '据说调戏时间过长服务器会爆炸哦……',

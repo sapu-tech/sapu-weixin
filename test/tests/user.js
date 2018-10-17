@@ -86,4 +86,40 @@ describe('A user', function() {
     body.should.have.property('code')
     body.code.should.be.equal(4)
   })
+
+  it('should use default language', async function() {
+    let {body} = await request(app)
+      .get('/user/' + user.userId)
+      .expect(200)
+    body.should.have.property('success')
+    body.success.should.be.equal(true)
+    body.should.have.property('user')
+    body.user.should.be.Object()
+    body.user.should.have.property('userLang')
+    body.user.userLang.should.be.equal(0)
+  })
+
+  it('should be able to switch language', async function() {
+    let newUser = Object.assign({}, user)
+    newUser.userLang = 2
+
+    let {body} = await request(app)
+      .post('/user/' + user.userId)
+      .send(newUser)
+      .expect(200)
+    body.should.have.property('success')
+    body.success.should.be.equal(true)
+  })
+
+  it('should use the changed language by now', async function() {
+    let {body} = await request(app)
+      .get('/user/' + user.userId)
+      .expect(200)
+    body.should.have.property('success')
+    body.success.should.be.equal(true)
+    body.should.have.property('user')
+    body.user.should.be.Object()
+    body.user.should.have.property('userLang')
+    body.user.userLang.should.be.equal(2)
+  })
 })

@@ -12,19 +12,11 @@ module.exports = {
   send(msg) {
     console.log("    => " + msg.content)
     return `<xml>
-      <ToUserName>
-      <![CDATA[ ${msg.toUserName} ]]>
-      </ToUserName>
-      <FromUserName>
-      <![CDATA[ ${msg.fromUserName} ]]>
-      </FromUserName>
-      <CreateTime> ${Math.round(new Date().getTime() / 1000)} </CreateTime>
-      <MsgType>
-      <![CDATA[ ${msg.msgType} ]]>
-      </MsgType>
-      <Content>
-      <![CDATA[ ${msg.content} ]]>
-      </Content>
+      <ToUserName><![CDATA[${msg.toUserName}]]></ToUserName>
+      <FromUserName><![CDATA[${msg.fromUserName}]]></FromUserName>
+      <CreateTime>${Math.round(new Date().getTime() / 1000)}</CreateTime>
+      <MsgType><![CDATA[${msg.msgType}]]></MsgType>
+      <Content><![CDATA[${msg.content}]]></Content>
       <MsgId>6328225816737123944</MsgId>
       </xml>`
   }

@@ -1,67 +1,70 @@
 module.exports = {
   commands: {
-    'reserve': 'reserve',
-    'list': 'list',
-    'new': 'new',
-    'setname': 'setname',
-    'delete': 'delete',
-    'flirt': 'flirt',
-    'all': 'all',
-    'info': 'info',
-    'recommend': 'recommend',
-    'language': 'language',
+    'r': 'reserve',
+    'l': 'list',
+    'n': 'new',
+    's': 'setname',
+    'd': 'delete',
+    'f': 'flirt',
+    'a': 'all',
+    'i': 'info',
+    'rec': 'recommend',
+    'lang': 'language',
     'set': 'set',
   },
-
-  'arguments_error': 'Arguments error!',
-
-  'reserve_help': 'Usage:\n'
-                  + '  reserve list\n'
-                  + '  reserve new [month] [date] [start] [end] [place]\n'
-                  + '  reserve delete [month] [date] [id]\n'
-                  + 'notes: only one place is available: 0(B241)\n'
-                  + '       if you want to reserve by half-clock, please use \'.5\' after hour number',
-  'reserve_new_set_name_notice': 'First you need to set your name (can be modified later on).\n'
-                      + 'Usage:\n  setname [name]',
-  'reserve_new_id': 'Reserved! Id: %d .',
-  'reserve_new_failed': 'Cannot make reservation. Time Conflict. Please contact %s.',
-  'reserve_new_argument_error': 'Time format error!',
-  'reserve_new_too_far_soon_error': 'Cannot make reservation that is a month later.',
-  'reserve_delete_id': 'Deleted %d-%d id %d.',
-  'reserve_delete_failed': 'Deleted %d-%d id %d failed! %s',
-  'reserve_delete_no_found': 'Reservation not found.',
-  'reserve_delete_forbidden': 'Deleting other\'s reservation forbidden.',
-
-  'setname_help': 'Usage:\n  setname [name]',
-  'username_set_name_to': 'Successfully set name to \'%s\'',
-  'username_not_blank': 'Username cannot be blank!',
   
-  'root_help': 'Thanks for your attention to SAPU! We will try our best to inform you our activity info and intersting music tips!\n'
-    + '(It\'s quite a pity that we may not response in the first time, so sit back and relax~~ If nothing is replied after 48 hours, please send your request again, or we may never get in touch with you!\n\n'
-    + 'Usage of sapu-weixin bot:\n'
-    + '  reserve list\n'
-    + '  reserve new [month] [date] [start] [end] [place]\n'
-    + '  reserve delete [month] [date] [id]\n'
-    + '  setname [name]\n'
-    + '  info [index]\n'
-    + '  recommend\n'
-    + '  flirt\n\n'
-    + 'examples:\n'
-    + '  reserve new 9 6 18.5 20 0\n'
-    + '  setname xDroid\n\n'
-    + 'notes: only one place is available: 0(B241)\n'
-    + '       if you want to reserve by half-clock, please use \'.5\' after hour number',
+  'arguments_error': '参数错误！请输入帮助查看命令列表。',
+
+  'reserve_help': `用法:
+  r l （预约 列表）
+  r n （预约 新增） [月] [日] [起始小时数] [结束小时数] [房间]
+  r d （预约 删除） [月] [日] [编号]
+房间号说明：
+  B241 -> 0
+  B255 -> 1
+如果需要预约半点，可以在小时数后加上.5表示半点`,
+  'reserve_new_set_name_notice': '首先你需要设置自己的昵称（稍后还能再次修改）.\n'
+                      + '用法：\n s （我是） [昵称]（空格不能省略！）',
+  'reserve_new_id': '已预约! 编号是 %d 。',
+  'reserve_new_failed': '由于时间冲突无法预约，请联系： %s。',
+  'reserve_new_argument_error': '时间格式/顺序有误！',
+  'reserve_new_too_far_soon_error': '不能新增一个月以后的预约。',
+  'reserve_delete_id': '已删除 %d月%d日 编号 %d 。',
+  'reserve_delete_failed': '删除 %d月%d日 编号 %d 失败！%s',
+  'reserve_delete_no_found': '未找到预约。',
+  'reserve_delete_forbidden': '不可以删除他人的预约哦。',
+
+  'setname_help': '用法:\n s （我是） [昵称]',
+  'username_set_name_to': '已将您的昵称修改为 \'%s\'',
+  'username_not_blank': '昵称不能为空！',
   
-  'view_reservations_followed_below': 'Reservations in 10 days are followed below:',
-  'view_no_reservations': 'No reservations at this time.',
-  'view_short_no_reservations': 'No reservations in the following 10 days.',
-  'view_subtitle': '%d-%d :',
-  'view_reservtion': '  %d by %s on %s from %s to %s at %s',
+  'root_help': `感谢关注提琴社小助手！本公众号使用方法如下：
+  r l （预约 列表）
+  r n （预约 新增） [月] [日] [起始小时数] [结束小时数] [房间]
+  r d （预约 删除） [月] [日] [编号]
+  i （信息） [序号]
+  s （我是） [昵称]
+  rec （推荐）
+  f （你好）
+
+示范命令:
+  r n 9 6 18.5 20 0
+  s 萌萌的微信菌
+
+房间号说明：
+  B241 -> 0
+  B255 -> 1
+如果需要预约半点，可以在小时数后加上.5表示半点`,
+  
+  'view_reservations_followed_below': '近10天预约情况如下：',
+  'view_no_reservations': '目前没有预约',
+  'view_short_no_reservations': '目前10天内没有预约',
+  'view_subtitle': '%d月%d日：',
+  'view_reservation': '  %d 由 %s 于 %s 从 %s 至 %s 在 %s',
 
   'info_not_found': '对不起，暂时没有序号 %d 的内容',
-  'info_help': '请输入“信息 [序号]”查询相关信息',
-  'info_helps': [
-    '社团简介',
+  'info_help': '请输入\'信息 [序号]\'',
+  'info_helps': ['社团简介',
     '弦乐团简介',
     '教学班简介',
     '弦乐团、小室内乐团排练时间',
@@ -96,7 +99,7 @@ module.exports = {
     '小组排练信息即将上线……',
     '提琴社近期活动安排\n'
       + '湖畔音乐会\n'
-      + '时间：10月22日下午3:00\n'
+      + '时间：10月29日下午3:00\n'
       + '地点：未名湖花神庙碑\n'
       + '\n'
       + '提纲音乐会\n'
@@ -106,13 +109,21 @@ module.exports = {
       + '欢迎前来！\n',
   ],
 
-  'language_help': `Language options:
+  'language_help': `语言选项：
 0 中文
 1 English
 2 56iL5bqP5ZGY5LiT55SoCg==
-Usage: language set [index]`,
-  'language_set': `Language set!`,
-  'language_set_failed': `Failed to set language!`,
+用法： lang set [序号]`,
+  'language_set': `语言设置成功！`,
+  'language_set_failed': `语言设置失败！`,
 
-  'flirt': ['To be added']
+  'flirt': ['哎呀，人家害羞啦⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄',
+    '据说调戏时间过长服务器会爆炸哦……',
+    '人家不睬你了(ー`´ー)',
+    '快来约小组玩耍吧~\(≧▽≦)/~',
+    '写代码好累哦(～﹃～)~zZ谁陪我聊聊天……',
+    '现在还有很多bug请谅解，总是要慢慢修复嘛',
+    '（编不下去了，你们谁来帮帮我……）',
+    '你们都在码农不在的时候偷偷给我发了什么(ー`´ー)',
+  ]
 }

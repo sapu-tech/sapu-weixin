@@ -26,16 +26,22 @@ router.get('/', asyncMiddleware(async (req, res, next) => {
 }))
 
 // add/change the name of the user
-// return {userId: userId, userName: userName}
+// return {userId, userName, userLang}
 router.post('/:userId', asyncMiddleware(async (req, res, next) => {
   let {userId} = req.params
-  let {userName} = req.body
+  let {userName, userLang} = req.body
 
-  if (userName === undefined || userName == "") {
+  if ((userName === undefined || userName == "") && userLang < 0) {
     throw new ReservationError(4)
   }
 
-  let user = await User.findOneAndUpdate({userId}, {userName: userName}, {new: true, upsert: true})
+  let update = {}
+  if (userLang !== undefined && userLang >= 0)
+    update.userLang = userLang
+  if (!(userName === undefined || userName == ""))
+    update.userName = userName
+
+  let user = await User.findOneAndUpdate({userId}, update, {new: true, upsert: true})
   successHandler(res, {user})
 }))
 
