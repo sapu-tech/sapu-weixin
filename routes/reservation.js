@@ -89,7 +89,7 @@ router.delete('/:userId/:reservationId', asyncMiddleware(async (req, res, next) 
   let {userId, reservationId} = req.params
   reservationId = parseInt(reservationId)
 
-  let reservation = await Reservation.findOne({reservationId})
+  let reservation = await Reservation.findOne({userId, reservationId})
   if (reservation) {
     if (reservation.userId == userId) {
       reservation = reservation.remove()
