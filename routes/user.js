@@ -30,15 +30,16 @@ router.get('/', asyncMiddleware(async (req, res, next) => {
 router.post('/:userId', asyncMiddleware(async (req, res, next) => {
   let {userId} = req.params
   let {userName, userLang} = req.body
+  console.log({userName, userLang})
 
-  if ((userName === undefined || userName == "") && userLang < 0) {
+  if ((userName === undefined || userName === "") && (userLang === undefined || userLang < 0)) {
     throw new ReservationError(4)
   }
 
   let update = {}
   if (userLang !== undefined && userLang >= 0)
     update.userLang = userLang
-  if (!(userName === undefined || userName == ""))
+  if (!(userName === undefined || userName === ""))
     update.userName = userName
 
   let user = await User.findOneAndUpdate({userId}, update, {new: true, upsert: true})
