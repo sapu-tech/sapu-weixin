@@ -32,6 +32,7 @@ let _it_with_user = (descprition, command, user) => it(descprition, r(command, u
 let thisMonth = ((new Date()).getMonth() + 2) % 12 - 1
 let next1Month = ((new Date()).getMonth() + 3) % 12 - 1
 let next2Month = ((new Date()).getMonth() + 4) % 12 - 1
+const next1Date = (new Date()).getDate() + 1;
 
 describe('Basic test', function() {
   _it(
@@ -41,7 +42,7 @@ describe('Basic test', function() {
 
   _it(
     'should be unable to add a reservation.',
-    `预约 新增 ${thisMonth} 28 18 20 0`
+    `预约 新增 ${thisMonth} ${next1Date} 18 20 0`
   )
 
   _it(
@@ -51,12 +52,32 @@ describe('Basic test', function() {
 
   _it(
     'should be able to add a reservation by now.',
-    `预约 新增 ${thisMonth} 28 18 20 0`
+    `预约 新增 ${thisMonth} ${next1Date} 18 20 0`
   )
 
   _it(
     'should be unable to add a reservation with time conflict.',
-    `预约 新增 ${thisMonth} 28 19 21 0`
+    `预约 新增 ${thisMonth} ${next1Date} 19 21 0`
+  )
+
+  _it(
+    'should be unable to add a reservation on today.',
+    `预约 新增 ${thisMonth} ${next1Date-1} 19 21 0`
+  )
+
+  _it(
+    'should be unable to add a reservation on yesterday.',
+    `预约 新增 ${thisMonth} ${next1Date-2} 19 21 0`
+  )
+
+  _it(
+    'should be unable to add a reservation on the today next week.',
+    `预约 新增 ${thisMonth} ${next1Date+6} 19 21 0`
+  )
+
+  _it(
+    'should be unable to add a reservation on the next day next week.',
+    `预约 新增 ${thisMonth} ${next1Date+7} 19 21 0`
   )
 })/*
 
@@ -289,6 +310,7 @@ describe('Info Test', () => {
 })
 */
 
+/*
 describe('Language Test', () => {
   _it(
     'Default language.',
@@ -335,6 +357,7 @@ describe('Language Test', () => {
     'language set 0'
   )
 })
+*/
 
 after(async function() {
   mongoose.connection.close()

@@ -19,8 +19,9 @@ module.exports = {
                   + '  reserve list\n'
                   + '  reserve new [month] [date] [start] [end] [place]\n'
                   + '  reserve delete [month] [date] [id]\n'
-                  + 'notes: only one place is available: 0(B241)\n'
-                  + '       if you want to reserve by half-clock, please use \'.5\' after hour number',
+                  + 'notes: place 0 stands for B241, 1 for B255\n'
+                  + '       if you want to reserve by half-clock, please use \'.5\' after hour number\n'
+                  + '       Please place your reservation before a day and within a week.',
   'reserve_new_set_name_notice': 'First you need to set your name (can be modified later on).\n'
                       + 'Usage:\n  setname [name]',
   'reserve_new_id': 'Reserved! Id: %d .',
@@ -31,6 +32,8 @@ module.exports = {
   'reserve_delete_failed': 'Deleted %d-%d id %d failed! %s',
   'reserve_delete_no_found': 'Reservation not found.',
   'reserve_delete_forbidden': 'Deleting other\'s reservation forbidden.',
+  'reserve_time_out_of_period_not_today': 'Please place your reservation before a day and within a week.',
+  'reserve_time_out_of_period_not_a_week_later': 'Please place your reservation before a day and within a week.',
 
   'setname_help': 'Usage:\n  setname [name]',
   'username_set_name_to': 'Successfully set name to \'%s\'',
@@ -49,8 +52,9 @@ module.exports = {
     + 'examples:\n'
     + '  reserve new 9 6 18.5 20 0\n'
     + '  setname xDroid\n\n'
-    + 'notes: only one place is available: 0(B241)\n'
-    + '       if you want to reserve by half-clock, please use \'.5\' after hour number',
+    + 'notes: place 0 stands for B241, 1 for B255\n'
+    + '       if you want to reserve by half-clock, please use \'.5\' after hour number\n'
+    + '       Please place your reservation before a day and within a week.',
   
   'view_reservations_followed_below': 'Reservations in 10 days are followed below:',
   'view_no_reservations': 'No reservations at this time.',

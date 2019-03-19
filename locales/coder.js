@@ -22,7 +22,9 @@ module.exports = {
 房间号说明：
   B241 -> 0
   B255 -> 1
-如果需要预约半点，可以在小时数后加上.5表示半点`,
+提示：
+  如果需要预约半点，可以在小时数后加上.5表示半点
+  请预约一天以后、一周之内的时间`,
   'reserve_new_set_name_notice': '首先你需要设置自己的昵称（稍后还能再次修改）.\n'
                       + '用法：\n s （我是） [昵称]（空格不能省略！）',
   'reserve_new_id': '已预约! 编号是 %d 。',
@@ -33,6 +35,8 @@ module.exports = {
   'reserve_delete_failed': '删除 %d月%d日 编号 %d 失败！%s',
   'reserve_delete_no_found': '未找到预约。',
   'reserve_delete_forbidden': '不可以删除他人的预约哦。',
+  'reserve_time_out_of_period_not_today': '不能新增今天的预约！请预约一天以后、一周之内的时间。',
+  'reserve_time_out_of_period_not_a_week_later': '不能新增一周之后的预约！请预约一天以后、一周之内的时间。',
 
   'setname_help': '用法:\n s （我是） [昵称]',
   'username_set_name_to': '已将您的昵称修改为 \'%s\'',
@@ -54,7 +58,9 @@ module.exports = {
 房间号说明：
   B241 -> 0
   B255 -> 1
-如果需要预约半点，可以在小时数后加上.5表示半点`,
+提示：
+  如果需要预约半点，可以在小时数后加上.5表示半点
+  请预约一天以后、一周之内的时间`,
   
   'view_reservations_followed_below': '近10天预约情况如下：',
   'view_no_reservations': '目前没有预约',
