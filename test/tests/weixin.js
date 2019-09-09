@@ -14,6 +14,8 @@ before(async function() {
   await mongoose.connection.dropDatabase()
 })
 
+const reg = /<Content><\!\[CDATA\[.*\]\]/s
+const prefix = '<Content><![CDATA['
 let r = (message, user) => async function() {
   msg.content = message
   msg.fromUserName = user
@@ -22,8 +24,10 @@ let r = (message, user) => async function() {
     .type('xml')
     .send(send(msg))
     .expect(200)
-  //await receive(body.text)
-  console.log(body.text)
+  // await receive(body.text)
+  // console.log(body.text)
+  const reply = body.text.match(reg)[0]
+  console.log(reply.substr(prefix.length, reply.length-2-prefix.length))
 }
 
 let _it = (descprition, command) => it(descprition, r(command, users[0].userName))
@@ -79,7 +83,7 @@ describe('Basic test', function() {
     'should be unable to add a reservation on the next day next week.',
     `预约 新增 ${thisMonth} ${next1Date+7} 19 21 0`
   )
-})/*
+})
 
 describe('Change name test', () => {
   _it(
@@ -251,8 +255,8 @@ describe('Reserve list Test', () => {
   )
 
   _it(
-    '${thisMonth}/28 12.5-14.5.`,
-    '预约 新增 ${thisMonth} 28 12.5 14.5 0'
+    `${thisMonth}/28 12.5-14.5.`,
+    `预约 新增 ${thisMonth} 28 12.5 14.5 0`
   ) // inDayId: 0
   
   _it(
@@ -281,7 +285,7 @@ describe('Reserve list Test', () => {
   ) // inDayId: 4
   
   _it(
-    `${next1Month}/28 21-23.',
+    `${next1Month}/28 21-23.`,
     `预约 新增 ${next1Month} 28 21 23 0`
   ) // inDayId: 5
   
@@ -292,25 +296,37 @@ describe('Reserve list Test', () => {
   
   _it(
     'check twice.',
-    '预约 列表 ${thisMonth} 28'
+    `预约 列表 ${thisMonth} 28`
   )
   
   _it(
     'check all.',
     '预约 全部'
   )
-})*/
+})
 
-/*
 describe('Info Test', () => {
   _it(
     'Basic info request.',
     '信息'
   )
 })
-*/
 
-/*
+
+describe('Flirt Test', () => {
+  _it(
+    'Basic flirt request.',
+    '你好'
+  )
+})
+
+describe('Version Test', () => {
+  _it(
+    'Basic version request.',
+    '版本'
+  )
+})
+
 describe('Language Test', () => {
   _it(
     'Default language.',
@@ -357,7 +373,6 @@ describe('Language Test', () => {
     'language set 0'
   )
 })
-*/
 
 after(async function() {
   mongoose.connection.close()

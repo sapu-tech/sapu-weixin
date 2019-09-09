@@ -11,6 +11,7 @@ module.exports = {
     'recommend': 'recommend',
     'language': 'language',
     'set': 'set',
+    'version': 'version',
   },
 
   'arguments_error': 'Arguments error!',
@@ -48,7 +49,8 @@ module.exports = {
     + '  setname [name]\n'
     + '  info [index]\n'
     + '  recommend\n'
-    + '  flirt\n\n'
+    + '  flirt\n'
+    + '  version\n\n'
     + 'examples:\n'
     + '  reserve new 9 6 18.5 20 0\n'
     + '  setname xDroid\n\n'
@@ -118,5 +120,9 @@ Usage: language set [index]`,
   'language_set': `Language set!`,
   'language_set_failed': `Failed to set language!`,
 
-  'flirt': ['To be added']
+  'flirt': ['To be added'],
+
+  'version': {
+    'log' : `HEAD -> %s\n%s`,
+  },
 }

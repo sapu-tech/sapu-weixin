@@ -11,6 +11,7 @@ module.exports = {
     'rec': 'recommend',
     'lang': 'language',
     'set': 'set',
+    'ver': 'version',
   },
   
   'arguments_error': '参数错误！请输入帮助查看命令列表。',
@@ -50,6 +51,7 @@ module.exports = {
   s （我是） [昵称]
   rec （推荐）
   f （你好）
+  ver （版本）
 
 示范命令:
   r n 9 6 18.5 20 0
@@ -131,5 +133,9 @@ module.exports = {
     '现在还有很多bug请谅解，总是要慢慢修复嘛',
     '（编不下去了，你们谁来帮帮我……）',
     '你们都在码农不在的时候偷偷给我发了什么(ー`´ー)',
-  ]
+  ],
+
+  'version': {
+    'log' : `HEAD -> %s\n%s`,
+  },
 }
