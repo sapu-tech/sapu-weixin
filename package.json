@@ -10,17 +10,17 @@
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
     "datejs": "1.0.0-rc3",
-    "debug": "^4.1.1",
+    "debug": "^4.2.0",
     "express": "^4.17.1",
     "glob": "^7.1.5",
-    "moment": "^2.24.0",
-    "moment-timezone": "^0.5.27",
-    "mongoose": "^5.7.7",
+    "moment": "^2.29.0",
+    "moment-timezone": "^0.5.31",
+    "mongoose": "^5.10.7",
     "morgan": "^1.9.1",
     "music-api-next": "^1.0.0",
-    "pm2": "^4.2.3",
+    "pm2": "^4.5.0",
     "request": "^2.88.0",
-    "request-promise": "^4.2.4",
+    "request-promise": "^4.2.6",
     "should": "^11.1.0",
     "simple-netease-cloud-music": "^0.1.8",
     "static-favicon": "~1.0.0",
@@ -30,7 +30,7 @@
     "xml2js-es6-promise": "^1.0.3"
   },
   "devDependencies": {
-    "mocha": "^7.1.1",
+    "mocha": "^7.2.0",
     "should": "^11.2.1",
     "supertest": "^3.4.2"
   }
