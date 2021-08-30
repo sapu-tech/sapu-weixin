@@ -15,11 +15,20 @@ const config = require('./config')
 
 var app = express()
 
-moment.tz.setDefault("Asia/Shanghai")
+if (config.production) {
+  moment.tz.setDefault("Asia/Shanghai")
+} else {
+  moment.tz.setDefault("America/Chicago")
+}
 
 // mongoose
 mongoose.Promise = Promise
-mongoose.connect(config.db, {useMongoClient: true}, error => {
+mongoose.connect(config.db, {
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: true,
+}, error => {
   if (error) {
     throw error
   }

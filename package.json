@@ -4,24 +4,24 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "mocha --timeout 1000 test/test.js"
+    "test": "mocha --timeout 1000 test/test.js",
+    "test_weixin": "mocha --timeout 1000 test/tests/weixin.js"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
     "datejs": "1.0.0-rc3",
-    "debug": "^4.2.0",
+    "debug": "^4.3.2",
     "express": "^4.17.1",
-    "glob": "^7.1.5",
-    "moment": "^2.29.0",
-    "moment-timezone": "^0.5.31",
-    "mongoose": "^5.10.7",
+    "glob": "^7.1.7",
+    "moment": "^2.29.1",
+    "moment-timezone": "^0.5.33",
+    "mongoose": "^5.13.8",
     "morgan": "^1.9.1",
     "music-api-next": "^1.0.0",
-    "pm2": "^4.5.0",
+    "pm2": "^4.5.6",
     "request": "^2.88.0",
     "request-promise": "^4.2.6",
-    "should": "^11.1.0",
     "simple-netease-cloud-music": "^0.1.8",
     "static-favicon": "~1.0.0",
     "string-format-js": "^0.1.8",
@@ -30,8 +30,8 @@
     "xml2js-es6-promise": "^1.0.3"
   },
   "devDependencies": {
-    "mocha": "^7.2.0",
-    "should": "^11.2.1",
-    "supertest": "^3.4.2"
+    "mocha": "^9.1.1",
+    "should": "^13.2.3",
+    "supertest": "^6.1.6"
   }
 }

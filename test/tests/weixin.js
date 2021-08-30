@@ -22,7 +22,7 @@ let r = (message, user) => async function() {
   let body = await request(baseURL)
     .post('/')
     .type('xml')
-    .send(send(msg))
+    .send(send(msg, user))
     .expect(200)
   // await receive(body.text)
   // console.log(body.text)
@@ -31,12 +31,12 @@ let r = (message, user) => async function() {
 }
 
 let _it = (descprition, command) => it(descprition, r(command, users[0].userName))
-let _it_with_user = (descprition, command, user) => it(descprition, r(command, user.Name))
+let _it_with_user = (descprition, command, user) => it(descprition, r(command, user.userName))
 
 let thisMonth = ((new Date()).getMonth() + 2) % 12 - 1
 let next1Month = ((new Date()).getMonth() + 3) % 12 - 1
 let next2Month = ((new Date()).getMonth() + 4) % 12 - 1
-const next1Date = (new Date()).getDate() + 1;
+const next3Date = (new Date()).getDate() + 3;
 
 describe('Basic test', function() {
   _it(
@@ -46,7 +46,7 @@ describe('Basic test', function() {
 
   _it(
     'should be unable to add a reservation.',
-    `预约 新增 ${thisMonth} ${next1Date} 18 20 0`
+    `预约 新增 ${thisMonth} ${next3Date} 18 20 0`
   )
 
   _it(
@@ -56,32 +56,27 @@ describe('Basic test', function() {
 
   _it(
     'should be able to add a reservation by now.',
-    `预约 新增 ${thisMonth} ${next1Date} 18 20 0`
+    `预约 新增 ${thisMonth} ${next3Date} 18 20 0`
   )
 
   _it(
     'should be unable to add a reservation with time conflict.',
-    `预约 新增 ${thisMonth} ${next1Date} 19 21 0`
+    `预约 新增 ${thisMonth} ${next3Date} 19 21 0`
   )
 
   _it(
     'should be unable to add a reservation on today.',
-    `预约 新增 ${thisMonth} ${next1Date-1} 19 21 0`
+    `预约 新增 ${thisMonth} ${next3Date-3} 19 21 0`
   )
 
   _it(
     'should be unable to add a reservation on yesterday.',
-    `预约 新增 ${thisMonth} ${next1Date-2} 19 21 0`
-  )
-
-  _it(
-    'should be unable to add a reservation on the today next week.',
-    `预约 新增 ${thisMonth} ${next1Date+6} 19 21 0`
+    `预约 新增 ${thisMonth} ${next3Date-4} 19 21 0`
   )
 
   _it(
     'should be unable to add a reservation on the next day next week.',
-    `预约 新增 ${thisMonth} ${next1Date+7} 19 21 0`
+    `预约 新增 ${thisMonth} ${next3Date+5} 19 21 0`
   )
 })
 
@@ -100,12 +95,12 @@ describe('Change name test', () => {
 describe('Delete reservation test', () => {
   _it(
     'should be able to delete the previous reservation',
-    `预约 删除 ${thisMonth} 28 0`
+    `预约 删除 ${thisMonth} ${next3Date} 0`
   )
 
   _it(
     'should be unable to delete the previous reservation again',
-    `预约 删除 ${thisMonth} 28 0`
+    `预约 删除 ${thisMonth} ${next3Date} 0`
   )
 
   _it(
@@ -122,7 +117,7 @@ describe('Two user test', function() {
 
   _it_with_user(
     'should be able to add one by users[0].',
-    `预约 新增 ${thisMonth} 28 18 20 0`,
+    `预约 新增 ${thisMonth} ${next3Date} 18 20 0`,
     users[0]
   ) // inDayId: 0
 
@@ -132,44 +127,49 @@ describe('Two user test', function() {
   )
 
   _it_with_user(
-    'should be unable to set name for users[1].',
+    'should be able to set name for users[1].',
     '我是 另一个用户',
     users[1]
   )
 
   _it_with_user(
     'should be unable to add one with time conflict by another user.',
-    `预约 新增 ${thisMonth} 28 17 19 0`,
+    `预约 新增 ${thisMonth} ${next3Date} 17 19 0`,
     users[1]
   )
 
   _it_with_user(
     'should be able to add one with no time conflict by another user.',
-    `预约 新增 ${thisMonth} 29 18 20 0`,
+    `预约 新增 ${thisMonth} ${next3Date+1} 18 20 0`,
     users[1]
   ) // inDayId: 0
 
+  _it(
+    'and check.',
+    '预约 列表'
+  )
+
   _it_with_user(
     'should be unable to delete reservation added by another user.',
-    `预约 删除 ${thisMonth} 29 0`,
+    `预约 删除 ${thisMonth} ${next3Date+1} 0`,
     users[0]
   )
 
   _it_with_user(
     'the same as above.',
-    `预约 删除 ${thisMonth} 28 0`,
+    `预约 删除 ${thisMonth} ${next3Date} 0`,
     users[1]
   )
 
   _it_with_user(
     'should be able to delete his own record.',
-    `预约 删除 ${thisMonth} 28 0`,
+    `预约 删除 ${thisMonth} ${next3Date} 0`,
     users[0]
   )
 
   _it_with_user(
     'the same as above.',
-    `预约 删除 ${thisMonth} 29 0`,
+    `预约 删除 ${thisMonth} ${next3Date+1} 0`,
     users[1]
   )
 
@@ -182,49 +182,49 @@ describe('Two user test', function() {
 describe('Conflict reservation Test', () => {
   _it_with_user(
     'should be able to add a reservation at first.',
-    `预约 新增 ${thisMonth} 28 12 14 0`,
+    `预约 新增 ${thisMonth} ${next3Date} 12 14 0`,
     users[0]
   ) // inDayId: 0
   
   _it_with_user(
     'should be able to add another reservation.',
-    `预约 新增 ${thisMonth} 28 15 17 0`,
+    `预约 新增 ${thisMonth} ${next3Date} 15 17 0`,
     users[0]
   ) // inDayId: 1
   
   _it_with_user(
     'some more...',
-    `预约 新增 ${thisMonth} 28 18 20 0`,
+    `预约 新增 ${thisMonth} ${next3Date} 18 20 0`,
     users[1]
   ) // inDayId: 2
   
   _it_with_user(
     'but reject a greddy user.',
-    `预约 新增 ${thisMonth} 28 11 15 0`,
+    `预约 新增 ${thisMonth} ${next3Date} 11 15 0`,
     users[0]
   )
   
   _it_with_user(
     'and also this one.',
-    `预约 新增 ${thisMonth} 28 12 21 0`,
+    `预约 新增 ${thisMonth} ${next3Date} 12 21 0`,
     users[1]
   )
   
   _it_with_user(
     'cleaning reservations.',
-    `预约 删除 ${thisMonth} 28 0`,
+    `预约 删除 ${thisMonth} ${next3Date} 0`,
     users[0]
   )
   
   _it_with_user(
     '..',
-    `预约 删除 ${thisMonth} 28 1`,
+    `预约 删除 ${thisMonth} ${next3Date} 1`,
     users[0]
   )
   
   _it_with_user(
     '...',
-    `预约 删除 ${thisMonth} 28 2`,
+    `预约 删除 ${thisMonth} ${next3Date} 2`,
     users[1]
   )
   
@@ -255,38 +255,38 @@ describe('Reserve list Test', () => {
   )
 
   _it(
-    `${thisMonth}/28 12.5-14.5.`,
-    `预约 新增 ${thisMonth} 28 12.5 14.5 0`
+    `${thisMonth}/${next3Date} 12.5-14.5.`,
+    `预约 新增 ${thisMonth} ${next3Date} 12.5 14.5 0`
   ) // inDayId: 0
   
   _it(
-    `${thisMonth}/27 10-13.`,
-    `预约 新增 ${thisMonth} 27 10 13 0`
-  ) // inDayId: 1
+    `${thisMonth}/${next3Date+1} 10-13.`,
+    `预约 新增 ${thisMonth} ${next3Date+1} 10 13 0`
+  ) // inDayId: 0
   
   _it(
-    `${thisMonth}/28 14-17.`,
-    `预约 新增 ${thisMonth} 28 14 17 0`
+    `${thisMonth}/${next3Date} 14-17.`,
+    `预约 新增 ${thisMonth} ${next3Date} 14 17 0`
   ) // rejected!
   
   _it(
-    `${thisMonth}/29 18-20.`,
-    `预约 新增 ${thisMonth} 29 18 20 0`
+    `${thisMonth}/${next3Date} 18-20.`,
+    `预约 新增 ${thisMonth} ${next3Date} 18 20 0`
   ) // inDayId: 2
   
   _it(
-    `${thisMonth}/27 6-9.`,
-    `预约 新增 ${thisMonth} 27 6 9 0`
+    `${thisMonth}/${next3Date} 6-9.`,
+    `预约 新增 ${thisMonth} ${next3Date} 6 9 0`
   ) // inDayId: 3
   
   _it(
-    `${thisMonth}/30 12-14.`,
-    `预约 新增 ${thisMonth} 30 12 14 0`
+    `${thisMonth}/${next3Date+1} 12-14.`,
+    `预约 新增 ${thisMonth} ${next3Date+1} 12 14 0`
   ) // inDayId: 4
   
   _it(
-    `${next1Month}/28 21-23.`,
-    `预约 新增 ${next1Month} 28 21 23 0`
+    `${next1Month}/${next3Date} 21-23.`,
+    `预约 新增 ${next1Month} ${next3Date} 21 23 0`
   ) // inDayId: 5
   
   _it(
@@ -296,7 +296,7 @@ describe('Reserve list Test', () => {
   
   _it(
     'check twice.',
-    `预约 列表 ${thisMonth} 28`
+    `预约 列表 ${thisMonth} ${next3Date}`
   )
   
   _it(
@@ -350,7 +350,7 @@ describe('Language Test', () => {
 
   _it(
     'just test.',
-    `r n ${thisMonth} 28 17 19 0`
+    `r n ${thisMonth} ${next3Date} 17 19 0`
   )
 
   _it(
@@ -360,7 +360,7 @@ describe('Language Test', () => {
 
   _it(
     'more tests.',
-    `r d ${thisMonth} 28 0`
+    `r d ${thisMonth} ${next3Date} 0`
   )
 
   _it(

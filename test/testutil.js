@@ -9,8 +9,8 @@ module.exports = {
     console.log("    <= " + data.Content[0])
   },
 
-  send(msg) {
-    console.log("    => " + msg.content)
+  send(msg, name) {
+    console.log("    " + name + " => " + msg.content)
     return `<xml>
       <ToUserName><![CDATA[${msg.toUserName}]]></ToUserName>
       <FromUserName><![CDATA[${msg.fromUserName}]]></FromUserName>
