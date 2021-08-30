@@ -109,6 +109,23 @@ describe('Delete reservation test', () => {
   )
 })
 
+describe('Room name test', () => {
+  _it(
+    'should be able to reserve by room name',
+    `预约 新增 ${thisMonth} ${next3Date} 16 18 B241`
+  )
+
+  _it(
+    'should reject invalid room name',
+    `预约 新增 ${thisMonth} ${next3Date} 16 18 B242`
+  )
+
+  _it(
+    'clean up',
+    `预约 删除 ${thisMonth} ${next3Date} 0`
+  )
+})
+
 describe('Two user test', function() {
   _it(
     'should get no reservations at the moment.',
@@ -371,6 +388,13 @@ describe('Language Test', () => {
   _it(
     'Change the language once again.',
     'language set 0'
+  )
+})
+
+describe('Recommend Test', () => {
+  _it(
+    'Recommend Test',
+    '推荐'
   )
 })
 

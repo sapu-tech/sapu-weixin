@@ -91,8 +91,6 @@ router.delete('/:userId/:reservationId', asyncMiddleware(async (req, res, next) 
 
   let reservation = await Reservation.findOne({userId, reservationId})
   if (reservation) {
-    console.log(reservation)
-    console.log(userId)
     if (reservation.userId == userId) {
       reservation = reservation.remove()
       successHandler(res, {reservation})
